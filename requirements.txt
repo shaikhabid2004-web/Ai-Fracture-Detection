@@ -1,4 +1,4 @@
-# Core Deep Learning (CPU optimized)
+# Core Deep Learning (CPU optimized - lightweight for cloud deployment)
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch
 torchvision
@@ -9,3 +9,7 @@ Pillow
 numpy
 matplotlib
 scikit-learn
+
+# Web Application & WSGI Server for Render/Cloud
+Flask
+gunicorn

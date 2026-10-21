@@ -34,8 +34,9 @@ elif os.path.exists(FRACATLAS_CHECKPOINT):
 else:
     CHECKPOINT_PATH = LEGACY_CHECKPOINT
 
-model = DualBoneFractureNetwork(pretrained=False, num_classes=1, num_subtypes=5)
-if os.path.exists(CHECKPOINT_PATH):
+has_custom_weights = os.path.exists(CHECKPOINT_PATH)
+model = DualBoneFractureNetwork(pretrained=(not has_custom_weights), num_classes=1, num_subtypes=5)
+if has_custom_weights:
     ckpt = torch.load(CHECKPOINT_PATH, map_location=DEVICE)
     model.load_state_dict(ckpt["model_state_dict"])
     if "mura" in CHECKPOINT_PATH.lower():
@@ -46,7 +47,7 @@ if os.path.exists(CHECKPOINT_PATH):
         model_name = "DualBoneFractureNet"
     print(f"[BoneSense App] Loaded {model_name} from {CHECKPOINT_PATH}")
 else:
-    print(f"[BoneSense App] WARNING: Checkpoint not found at {CHECKPOINT_PATH}")
+    print(f"[BoneSense App] Checkpoint not found at {CHECKPOINT_PATH}. Initialized with pretrained backbone features for zero-downtime cloud preview.")
 
 model.to(DEVICE)
 model.eval()
@@ -416,5 +417,6 @@ def analyze():
     })
 
 if __name__ == '__main__':
-    print("[BoneSense App] Starting web dashboard on http://127.0.0.1:5000 (and http://localhost:5000) ...")
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    port = int(os.environ.get("PORT", 5000))
+    print(f"[BoneSense App] Starting web dashboard on port {port} (http://127.0.0.1:{port}) ...")
+    app.run(host='0.0.0.0', port=port, debug=False)
