@@ -1,0 +1,92 @@
+{
+  "dataset_split": "test",
+  "total_samples": 10,
+  "fracture_samples": 5,
+  "normal_samples": 5,
+  "confusion_matrix": {
+    "true_positive": 5,
+    "false_negative": 0,
+    "false_positive": 0,
+    "true_negative": 5
+  },
+  "metrics": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "specificity": 1.0,
+    "roc_auc": 1.0
+  },
+  "sample_records": [
+    {
+      "filename": "img_001.png",
+      "ground_truth": "Fracture",
+      "predicted": "Fracture",
+      "probability": 0.814,
+      "correct": true
+    },
+    {
+      "filename": "img_005.png",
+      "ground_truth": "Fracture",
+      "predicted": "Fracture",
+      "probability": 0.9267,
+      "correct": true
+    },
+    {
+      "filename": "img_010.png",
+      "ground_truth": "Fracture",
+      "predicted": "Fracture",
+      "probability": 0.7126,
+      "correct": true
+    },
+    {
+      "filename": "img_023.png",
+      "ground_truth": "Fracture",
+      "predicted": "Fracture",
+      "probability": 0.6005,
+      "correct": true
+    },
+    {
+      "filename": "img_026.png",
+      "ground_truth": "Fracture",
+      "predicted": "Fracture",
+      "probability": 0.7164,
+      "correct": true
+    },
+    {
+      "filename": "normal_001.png",
+      "ground_truth": "Normal",
+      "predicted": "Normal",
+      "probability": 0.133,
+      "correct": true
+    },
+    {
+      "filename": "normal_004.png",
+      "ground_truth": "Normal",
+      "predicted": "Normal",
+      "probability": 0.0394,
+      "correct": true
+    },
+    {
+      "filename": "normal_009.png",
+      "ground_truth": "Normal",
+      "predicted": "Normal",
+      "probability": 0.0424,
+      "correct": true
+    },
+    {
+      "filename": "normal_021.png",
+      "ground_truth": "Normal",
+      "predicted": "Normal",
+      "probability": 0.1952,
+      "correct": true
+    },
+    {
+      "filename": "normal_024.png",
+      "ground_truth": "Normal",
+      "predicted": "Normal",
+      "probability": 0.0976,
+      "correct": true
+    }
+  ]
+}

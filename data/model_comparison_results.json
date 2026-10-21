@@ -1,0 +1,122 @@
+{
+  "Proposed (Spatial Attn)": {
+    "accuracy": 100.0,
+    "precision": 100.0,
+    "recall": 100.0,
+    "f1_score": 1.0,
+    "specificity": 100.0,
+    "roc_auc": 1.0,
+    "fpr": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "tpr": [
+      0.0,
+      0.2,
+      1.0,
+      1.0
+    ],
+    "latency_ms": 205.6,
+    "params_m": 11.64,
+    "size_mb": 44.4,
+    "confusion_matrix": {
+      "tp": 5,
+      "fn": 0,
+      "fp": 0,
+      "tn": 5
+    },
+    "spatial_attention": "Yes (CBAM + Relational)"
+  },
+  "Standard ResNet-18": {
+    "accuracy": 100.0,
+    "precision": 100.0,
+    "recall": 100.0,
+    "f1_score": 1.0,
+    "specificity": 100.0,
+    "roc_auc": 1.0,
+    "fpr": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "tpr": [
+      0.0,
+      0.2,
+      1.0,
+      1.0
+    ],
+    "latency_ms": 196.7,
+    "params_m": 11.17,
+    "size_mb": 42.61,
+    "confusion_matrix": {
+      "tp": 5,
+      "fn": 0,
+      "fp": 0,
+      "tn": 5
+    },
+    "spatial_attention": "No (Standard CNN)"
+  },
+  "MobileNet-V2": {
+    "accuracy": 100.0,
+    "precision": 100.0,
+    "recall": 100.0,
+    "f1_score": 1.0,
+    "specificity": 100.0,
+    "roc_auc": 1.0,
+    "fpr": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "tpr": [
+      0.0,
+      0.2,
+      1.0,
+      1.0
+    ],
+    "latency_ms": 154.6,
+    "params_m": 2.22,
+    "size_mb": 8.49,
+    "confusion_matrix": {
+      "tp": 5,
+      "fn": 0,
+      "fp": 0,
+      "tn": 5
+    },
+    "spatial_attention": "No (Inverted Residuals)"
+  },
+  "DenseNet-121": {
+    "accuracy": 100.0,
+    "precision": 100.0,
+    "recall": 100.0,
+    "f1_score": 1.0,
+    "specificity": 100.0,
+    "roc_auc": 1.0,
+    "fpr": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "tpr": [
+      0.0,
+      0.2,
+      1.0,
+      1.0
+    ],
+    "latency_ms": 593.4,
+    "params_m": 6.95,
+    "size_mb": 26.51,
+    "confusion_matrix": {
+      "tp": 5,
+      "fn": 0,
+      "fp": 0,
+      "tn": 5
+    },
+    "spatial_attention": "No (Dense Connections)"
+  }
+}

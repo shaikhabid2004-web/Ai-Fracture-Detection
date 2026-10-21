@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyTorch checkpoints (Large weight files >100MB excluded per GitHub file size policy)
+checkpoints/*.pt
+!checkpoints/anatomy_classifier.pt
+!checkpoints/.gitkeep
+
+# Datasets and generated batch images (Excluded from git history; reproduced via src/ scripts)
+data/raw/*
+!data/raw/.gitkeep
+data/cleaned/*
+!data/cleaned/.gitkeep
+data/dataset_splits/*
+!data/dataset_splits/.gitkeep
+data/predictions/*
+!data/predictions/.gitkeep
+data/fracatlas_prepared/
+data/MURA-v1.1/
+data/mura_parts/
+data/mura_archive.zip
+data/*.png
+data/*.jpg
+
+# Logs, caches, temporary & scratch files
+*.log
+scratch/
+chat_history_backup/
+.pytest_cache/
+.DS_Store
+Thumbs.db

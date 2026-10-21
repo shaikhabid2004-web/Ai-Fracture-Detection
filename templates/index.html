@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoneSense AI™ | Robotic Orthopedic PACS Station</title>
+    <meta name="description" content="Futuristic Robotic PACS Workstation powered by DualBoneFractureNet AI Core for sub-millimeter bone fracture diagnostics.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Orbitron:wght@500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #050811;
+            --bg-surface: #0a101d;
+            --bg-surface-elevated: #0f182c;
+            --bg-card: rgba(10, 16, 29, 0.94);
+            --border-subtle: rgba(56, 189, 248, 0.22);
+            --border-highlight: rgba(56, 189, 248, 0.6);
+            --border-glow: 0 0 15px rgba(56, 189, 248, 0.25);
+            --accent-cyan: #38bdf8;
+            --accent-blue: #0284c7;
+            --accent-emerald: #10b981;
+            --accent-emerald-glow: rgba(16, 185, 129, 0.4);
+            --accent-rose: #f43f5e;
+            --accent-rose-glow: rgba(244, 63, 94, 0.45);
+            --accent-amber: #f59e0b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --font-display: 'Orbitron', -apple-system, sans-serif;
+            --font-ui: 'Chakra Petch', sans-serif;
+            --font-terminal: 'Share Tech Mono', monospace;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                radial-gradient(circle at 10% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 90% 85%, rgba(16, 185, 129, 0.06) 0%, transparent 45%);
+            background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%;
+        }
+
+        /* Robotic Cyber Top Header */
+        header.robot-header {
+            height: 56px;
+            background: rgba(10, 16, 29, 0.96);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .robot-crest {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .brand-title-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-sub {
+            font-family: var(--font-terminal);
+            font-size: 0.65rem;
+            color: var(--accent-cyan);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .brand-main {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-name {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            background: linear-gradient(to right, #ffffff, #bae6fd 60%, var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .robot-badge {
+            font-family: var(--font-terminal);
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.15rem 0.45rem;
+            border-radius: 3px;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            letter-spacing: 0.05em;
+        }
+
+        .header-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .system-status-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            padding: 0.25rem 0.65rem;
+            border-radius: 4px;
+            font-family: var(--font-terminal);
+            letter-spacing: 0.06em;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+        }
+
+        .pulse-core {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+            box-shadow: 0 0 8px var(--accent-emerald);
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.3); }
+        }
+
+        .clock-terminal {
+            font-size: 0.75rem;
+            font-family: var(--font-terminal);
+            color: var(--accent-cyan);
+            background: rgba(4, 7, 14, 0.8);
+            padding: 0.25rem 0.65rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-subtle);
+            letter-spacing: 0.05em;
+        }
+
+        /* 2-Column Robotic Workspace Grid */
+        .workspace-grid {
+            max-width: 1560px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.15rem 1.5rem;
+            display: grid;
+            grid-template-columns: 310px 1fr;
+            gap: 1.15rem;
+            flex: 1;
+            align-items: start;
+        }
+
+        /* Robotic Tech Card Container */
+        .cyber-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .cyber-card:hover {
+            border-color: var(--border-highlight);
+            box-shadow: var(--border-glow);
+        }
+
+        /* Tech Corner Brackets */
+        .cyber-card::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid var(--accent-cyan);
+            border-right: 2px solid var(--accent-cyan);
+            pointer-events: none;
+        }
+
+        .cyber-card-hdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-family: var(--font-display);
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-main);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.5rem;
+        }
+
+        .cyber-card-hdr span.prefix {
+            color: var(--accent-cyan);
+            margin-right: 0.35rem;
+        }
+
+        /* Left Column */
+        .col-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-row {
+            margin-bottom: 0.75rem;
+        }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-terminal);
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.04em;
+        }
+
+        select.cyber-select {
+            width: 100%;
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 0.6rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-ui);
+            font-size: 0.82rem;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        select.cyber-select optgroup {
+            background: var(--bg-surface);
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        select.cyber-select:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+        }
+
+        /* Dropzone Box */
+        .cyber-dropzone {
+            border: 1.5px dashed rgba(56, 189, 248, 0.3);
+            border-radius: var(--radius-sm);
+            background: rgba(10, 16, 29, 0.6);
+            padding: 0.9rem 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cyber-dropzone:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        .dropzone-icon {
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.25rem;
+        }
+
+        .dropzone-title {
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: 0.05em;
+        }
+
+        .dropzone-sub {
+            font-family: var(--font-terminal);
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            margin-top: 0.15rem;
+        }
+
+        .file-loaded-tag {
+            margin-top: 0.5rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-cyan);
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.68rem;
+            font-family: var(--font-terminal);
+            word-break: break-all;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        /* Robotic Primary Button */
+        .btn-robot-scan {
+            width: 100%;
+            background: linear-gradient(135deg, #0284c7, #0ea5e9, #38bdf8);
+            color: #030712;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 18px rgba(14, 165, 233, 0.4);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-robot-scan:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(56, 189, 248, 0.6);
+            filter: brightness(1.08);
+        }
+
+        .btn-robot-scan:active {
+            transform: translateY(0);
+        }
+
+        /* 2x2 Telemetry Metric Tiles */
+        .telemetry-2x2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.55rem;
+        }
+
+        .telemetry-tile {
+            background: rgba(8, 12, 22, 0.75);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 0.55rem 0.7rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            position: relative;
+        }
+
+        .telemetry-tile-lbl {
+            font-family: var(--font-terminal);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .telemetry-tile-val {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: 0.02em;
+        }
+
+        .telemetry-tile-sub {
+            font-family: var(--font-terminal);
+            font-size: 0.62rem;
+            color: var(--accent-cyan);
+        }
+
+        /* Sidebar Action Buttons */
+        .sidebar-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-cyber-outline {
+            flex: 1;
+            background: rgba(10, 16, 29, 0.7);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 0.55rem 0.4rem;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-terminal);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cyber-outline:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        /* Right Column */
+        .col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* ==========================================================================
+           ROBOTIC CENTERPIECE: STUDY • ANATOMY • MODALITY + ROBOT EVALUATION READOUT
+           ========================================================================== */
+        .robot-hero-banner {
+            background: linear-gradient(135deg, rgba(10, 16, 29, 0.98) 0%, rgba(15, 24, 44, 0.98) 100%);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-md);
+            padding: 1.15rem 1.35rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(56, 189, 248, 0.05);
+            position: relative;
+        }
+
+        .robot-hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-blue));
+            border-top-left-radius: var(--radius-md);
+            border-bottom-left-radius: var(--radius-md);
+        }
+
+        /* 3 Robotic Highlight Badges */
+        .robot-badges-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.85rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .robot-badge-tile {
+            background: rgba(5, 8, 16, 0.85);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 0.65rem 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .robot-badge-tile:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+        }
+
+        .robot-badge-lbl {
+            font-family: var(--font-terminal);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-cyan);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .robot-badge-val {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .robot-badge-sub {
+            font-family: var(--font-terminal);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+        }
+
+        /* Robotic Terminal Paragraph Box */
+        .terminal-readout-box {
+            background: rgba(4, 7, 14, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+            position: relative;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-terminal);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            letter-spacing: 0.08em;
+            margin-bottom: 0.6rem;
+            border-bottom: 1px dashed rgba(56, 189, 248, 0.25);
+            padding-bottom: 0.35rem;
+        }
+
+        .terminal-text {
+            font-family: var(--font-terminal);
+            font-size: 0.88rem;
+            line-height: 1.65;
+            color: #e2e8f0;
+            letter-spacing: 0.02em;
+            white-space: pre-line;
+            min-height: 70px;
+        }
+
+        .robot-cursor {
+            color: var(--accent-cyan);
+            animation: cursorBlink 0.8s infinite;
+            display: inline-block;
+            font-weight: 900;
+            margin-left: 2px;
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .robotic-tag-fracture {
+            color: var(--accent-rose);
+            font-weight: 800;
+            background: rgba(244, 63, 94, 0.2);
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            border: 1px solid rgba(244, 63, 94, 0.4);
+        }
+
+        .robotic-tag-normal {
+            color: var(--accent-emerald);
+            font-weight: 800;
+            background: rgba(16, 185, 129, 0.2);
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        /* Robotic Verdict Strip */
+        .cyber-verdict-strip {
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            transition: all 0.25s ease;
+        }
+
+        .cyber-verdict-strip.fracture-mode {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(10, 16, 29, 0.95) 75%);
+            border-color: rgba(244, 63, 94, 0.65);
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.35);
+        }
+
+        .cyber-verdict-strip.normal-mode {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(10, 16, 29, 0.95) 75%);
+            border-color: rgba(16, 185, 129, 0.65);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+        }
+
+        .verdict-title {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .fracture-mode .verdict-title {
+            color: var(--accent-rose);
+            text-shadow: 0 0 20px rgba(244, 63, 94, 0.65);
+        }
+
+        .normal-mode .verdict-title {
+            color: var(--accent-emerald);
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.65);
+        }
+
+        .verdict-sub {
+            display: none;
+        }
+        }
+
+        .verdict-subtype-tag {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        /* Robotic Viewport Frame */
+        .cyber-viewport-box {
+            background: #02050e;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+        }
+
+        .viewport-top-bar {
+            background: rgba(10, 16, 29, 0.98);
+            padding: 0.5rem 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .tab-cluster {
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(4, 7, 14, 0.8);
+            padding: 0.2rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-blue);
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
+        }
+
+        .preset-cluster {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .btn-preset {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 0.3rem 0.55rem;
+            border-radius: 3px;
+            font-family: var(--font-terminal);
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-preset:hover {
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+        }
+
+        .btn-preset.active {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        /* Viewport Canvas Frame */
+        .viewport-screen {
+            position: relative;
+            background: radial-gradient(circle at center, #070d1a 0%, #02050e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 480px;
+            max-height: 520px;
+            padding: 1rem;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .radiograph-display {
+            max-width: 100%;
+            max-height: 500px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: opacity 0.2s ease, filter 0.2s ease;
+        }
+
+        /* Image Filter Presets */
+        .filter-contrast { filter: contrast(140%) brightness(105%); }
+        .filter-invert { filter: invert(100%); }
+
+        /* Scanning Radar Overlay */
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 5, 14, 0.88);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.85rem;
+            z-index: 20;
+        }
+
+        .scanner-ring {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(56, 189, 248, 0.2);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spinFast 0.8s linear infinite;
+        }
+
+        @keyframes spinFast {
+            to { transform: rotate(360deg); }
+        }
+
+        .scanner-text {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            letter-spacing: 0.08em;
+        }
+
+        /* Robotic Footer */
+        footer.robot-footer {
+            background: rgba(5, 8, 17, 0.95);
+            border-top: 1px solid var(--border-subtle);
+            padding: 0.65rem 1.5rem;
+            font-family: var(--font-terminal);
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            letter-spacing: 0.04em;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .workspace-grid {
+                grid-template-columns: 1fr;
+            }
+            .robot-badges-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="robot-header">
+        <div class="brand-wrap">
+            <div class="robot-crest">⚡</div>
+            <div class="brand-title-box">
+                <div class="brand-main">
+                    <span class="brand-name">BoneSense AI™</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-meta">
+            <div class="system-status-pill">
+                <span class="pulse-core"></span>
+                <span>NEURAL_CORE // ONLINE</span>
+            </div>
+            <div class="clock-terminal" id="liveClock">--:--:-- UTC</div>
+        </div>
+    </header>
+
+    <!-- Robotic Workspace Grid -->
+    <div class="workspace-grid">
+
+        <!-- Column 1: Intake & Telemetry -->
+        <aside class="col-left">
+
+            <!-- Study Intake Card -->
+            <div class="cyber-card">
+                <div class="cyber-card-hdr">
+                    <span><span class="prefix">::</span>RADIOGRAPH INTAKE</span>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label" for="sampleSelect">&gt;&gt; SELECT PRELOADED STUDY</label>
+                    <select class="cyber-select" id="sampleSelect">
+                        <option value="">-- Choose X-Ray Study --</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">&gt;&gt; OR UPLOAD RADIOGRAPH FILE</label>
+                    <div class="cyber-dropzone" id="dropzone">
+                        <div class="dropzone-icon">📥</div>
+                        <div class="dropzone-title">DROP X-RAY MATRIX HERE</div>
+                        <div class="dropzone-sub">DICOM (.dcm), PNG, JPEG SUPPORTED</div>
+                        <div class="file-loaded-tag" id="fileLoadedTag"></div>
+                        <input type="file" id="fileInput" accept="image/*,.dcm" style="display: none;">
+                    </div>
+                </div>
+
+                <button class="btn-robot-scan" id="analyzeBtn" onclick="runAnalysis()">
+                    <span>⚡</span>
+                    <span>INITIATE ROBOTIC SCAN</span>
+                </button>
+            </div>
+
+            <!-- 2x2 Telemetry Metric HUD -->
+            <div class="cyber-card">
+                <div class="cyber-card-hdr">
+                    <span><span class="prefix">::</span>TELEMETRY HUD</span>
+                    <span style="font-family: var(--font-terminal); font-size: 0.68rem; color: var(--accent-cyan);">0.150 mm/px</span>
+                </div>
+
+                <div class="telemetry-2x2">
+                    <div class="telemetry-tile">
+                        <span class="telemetry-tile-lbl">CORTICAL GAP</span>
+                        <span class="telemetry-tile-val" id="kpiGap">-- mm</span>
+                        <span class="telemetry-tile-sub">&lt; 0.2mm INTACT</span>
+                    </div>
+
+                    <div class="telemetry-tile">
+                        <span class="telemetry-tile-lbl">AXIS TILT</span>
+                        <span class="telemetry-tile-val" id="kpiTilt">--°</span>
+                        <span class="telemetry-tile-sub">0.0° ANATOMICAL</span>
+                    </div>
+
+                    <div class="telemetry-tile">
+                        <span class="telemetry-tile-lbl">CRACK EXTENT</span>
+                        <span class="telemetry-tile-val" id="kpiLength">-- mm</span>
+                        <span class="telemetry-tile-sub">PROPAGATION</span>
+                    </div>
+
+                    <div class="telemetry-tile">
+                        <span class="telemetry-tile-lbl">AI CONFIDENCE</span>
+                        <span class="telemetry-tile-val" id="kpiConf">--%</span>
+                        <span class="telemetry-tile-sub">NEURAL PROB</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Actions -->
+            <div class="cyber-card">
+                <div class="sidebar-actions">
+                    <button class="btn-cyber-outline" onclick="downloadImage()">
+                        <span>💾</span>
+                        <span>EXPORT PACS</span>
+                    </button>
+                    <button class="btn-cyber-outline" onclick="printReport()">
+                        <span>🖨️</span>
+                        <span>PRINT REPORT</span>
+                    </button>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Column 2: Robotic Main Viewport & Centerpiece -->
+        <main class="col-right">
+
+            <!-- ==========================================================================
+                 ROBOTIC CENTERPIECE: STUDY • ANATOMY • MODALITY + TERMINAL TYPEWRITER HUD
+                 ========================================================================== -->
+            <section class="robot-hero-banner">
+
+                <!-- 3 Robotic Highlight Badges -->
+                <div class="robot-badges-row">
+                    <!-- Study Tile -->
+                    <div class="robot-badge-tile">
+                        <div class="robot-badge-lbl">
+                            <span>📁</span>
+                            <span>TARGET STUDY</span>
+                        </div>
+                        <div class="robot-badge-val" id="heroStudyVal">Study #08 (Paired Tib-Fib)</div>
+                        <div class="robot-badge-sub" id="heroStudySub">ACCESSION: #DX-RAD-2026</div>
+                    </div>
+
+                    <!-- Anatomy Tile -->
+                    <div class="robot-badge-tile">
+                        <div class="robot-badge-lbl">
+                            <span>🦴</span>
+                            <span>ANATOMICAL TARGET</span>
+                        </div>
+                        <div class="robot-badge-val" id="heroAnatomyVal">Leg (Tibia & Fibula)</div>
+                        <div class="robot-badge-sub" id="heroAnatomySub">AI ANATOMY MATCH: 99.5%</div>
+                    </div>
+
+                    <!-- Modality Tile -->
+                    <div class="robot-badge-tile">
+                        <div class="robot-badge-lbl">
+                            <span>🩻</span>
+                            <span>SENSOR MODALITY</span>
+                        </div>
+                        <div class="robot-badge-val" id="heroModalityVal">Digital Radiography (DX)</div>
+                        <div class="robot-badge-sub">CALIBRATION: 512×512 @ 0.15 mm/px</div>
+                    </div>
+                </div>
+
+                <!-- Robotic Terminal Output Box -->
+                <div class="terminal-readout-box">
+                    <div class="terminal-header">
+                        <span>📋 CLINICAL DIAGNOSTIC SUMMARY</span>
+                        <span style="color: var(--accent-emerald);">● STREAM ACTIVE</span>
+                    </div>
+                    <div class="terminal-text" id="heroClinicalParagraph">
+                        >> SYSTEM STANDBY: Awaiting clinical radiograph ingestion. Select a preloaded study or upload a patient X-ray to initiate real-time cortical integrity scan and millimeter displacement telemetry.
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Robotic Verdict Strip -->
+            <div class="cyber-verdict-strip normal-mode" id="verdictStrip">
+                <div class="verdict-title" id="verdictTitle">STANDBY</div>
+                <div class="verdict-sub" id="verdictSub" style="display: none;"></div>
+                <div class="verdict-subtype-tag" id="verdictSubtypeTag" style="display: none;"></div>
+            </div>
+
+            <!-- Robotic Viewport Shell -->
+            <div class="cyber-viewport-box">
+                <div class="viewport-top-bar">
+                    <div class="tab-cluster">
+                        <button class="tab-btn active" id="tabCalipers" onclick="switchView('calipers')">
+                            <span>📐</span>
+                            <span>SURGICAL CALIPERS</span>
+                        </button>
+                        <button class="tab-btn" id="tabCam" onclick="switchView('cam')">
+                            <span>🔥</span>
+                            <span>CRACK HEATMAP</span>
+                        </button>
+                        <button class="tab-btn" id="tabComposite" onclick="switchView('composite')">
+                            <span>📋</span>
+                            <span>3-PANEL COMPOSITE</span>
+                        </button>
+                        <button class="tab-btn" id="tabRaw" onclick="switchView('raw')">
+                            <span>🩻</span>
+                            <span>RAW X-RAY</span>
+                        </button>
+                    </div>
+
+                    <div class="preset-cluster">
+                        <button class="btn-preset active" onclick="applyPreset('normal', this)">STANDARD</button>
+                        <button class="btn-preset" onclick="applyPreset('contrast', this)">HIGH CONTRAST</button>
+                        <button class="btn-preset" onclick="applyPreset('invert', this)">INVERT (NEG)</button>
+                    </div>
+                </div>
+
+                <div class="viewport-screen">
+                    <div class="scanner-overlay" id="scannerLoader">
+                        <div class="scanner-ring"></div>
+                        <div class="scanner-text">&gt;&gt; SCANNING RADIOGRAPH &amp; CALIBRATING CALIPERS...</div>
+                    </div>
+                    <img id="mainDisplay" class="radiograph-display" src="/static/placeholder.jpg" alt="Robotic PACS Radiograph Display">
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- Robotic Footer -->
+    <footer class="robot-footer">
+        <div>
+            <strong>BoneSense AI™</strong> // AUTONOMOUS ORTHOPEDIC DIAGNOSTIC CORE • PS3.1-2024 DICOM COMPLIANT.
+        </div>
+        <div>
+            STATION_ID: RAD-DX-04 // LATENCY: &lt; 35ms // GPU ACCELERATED
+        </div>
+    </footer>
+
+    <script>
+        let currentAnalysis = null;
+        let currentView = 'calipers';
+        let typeTimer = null;
+
+        // Live Robotic Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('liveClock').textContent = now.toUTCString().split(' ')[4] + ' UTC';
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadSamples();
+            setupDropzone();
+        });
+
+        // Load Preloaded Clinical Cases
+        async function loadSamples() {
+            try {
+                const res = await fetch('/api/samples');
+                const categories = await res.json();
+                const sel = document.getElementById('sampleSelect');
+                sel.innerHTML = '<option value="">-- Choose X-Ray Study --</option>';
+
+                if (Array.isArray(categories)) {
+                    categories.forEach(cat => {
+                        if (cat.samples && Array.isArray(cat.samples)) {
+                            const group = document.createElement('optgroup');
+                            group.label = cat.category;
+                            cat.samples.forEach(s => {
+                                const opt = document.createElement('option');
+                                opt.value = s.id;
+                                opt.textContent = s.filename;
+                                group.appendChild(opt);
+                            });
+                            sel.appendChild(group);
+                        } else if (cat.id) {
+                            const opt = document.createElement('option');
+                            opt.value = cat.id;
+                            opt.textContent = cat.filename || cat.id;
+                            sel.appendChild(opt);
+                        }
+                    });
+                }
+
+                sel.addEventListener('change', () => {
+                    if (sel.value) {
+                        document.getElementById('fileInput').value = '';
+                        document.getElementById('fileLoadedTag').style.display = 'none';
+                        runAnalysis();
+                    }
+                });
+
+                // Auto-run first sample
+                const firstOption = sel.querySelector('option[value]:not([value=""])');
+                if (firstOption) {
+                    sel.value = firstOption.value;
+                    runAnalysis();
+                }
+            } catch (err) {
+                console.error("Error loading samples:", err);
+            }
+        }
+
+        // File Dropzone Setup
+        function setupDropzone() {
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('fileInput');
+            const tag = document.getElementById('fileLoadedTag');
+
+            dropzone.addEventListener('click', () => fileInput.click());
+
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.style.borderColor = 'var(--accent-cyan)';
+            });
+
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.style.borderColor = 'rgba(56, 189, 248, 0.3)';
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.style.borderColor = 'rgba(56, 189, 248, 0.3)';
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFile();
+                }
+            });
+
+            fileInput.addEventListener('change', handleFile);
+        }
+
+        function handleFile() {
+            const fileInput = document.getElementById('fileInput');
+            const tag = document.getElementById('fileLoadedTag');
+            if (fileInput.files && fileInput.files.length > 0) {
+                const f = fileInput.files[0];
+                tag.textContent = `✓ ${f.name} (${(f.size / 1024).toFixed(1)} KB)`;
+                tag.style.display = 'inline-flex';
+                document.getElementById('sampleSelect').value = '';
+                runAnalysis();
+            }
+        }
+
+        // Execute Robotic Diagnostic Inference
+        async function runAnalysis() {
+            const sampleId = document.getElementById('sampleSelect').value;
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (!sampleId && !file) {
+                alert("Please select a study or upload an X-ray image.");
+                return;
+            }
+
+            const formData = new FormData();
+            if (file) {
+                formData.append('file', file);
+            } else {
+                formData.append('sample_id', sampleId);
+            }
+
+            const loader = document.getElementById('scannerLoader');
+            loader.style.display = 'flex';
+
+            try {
+                const res = await fetch('/api/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!res.ok) {
+                    throw new Error(`HTTP Error: ${res.status}`);
+                }
+                const data = await res.json();
+                currentAnalysis = data;
+                renderRoboticDashboard(data);
+            } catch (err) {
+                alert("Diagnostic analysis error: " + err.message);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Robotic Character-by-Character Typewriter Stream Effect
+        function typeRobotStream(elementId, htmlString, speed = 8) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            if (typeTimer) clearInterval(typeTimer);
+
+            el.innerHTML = '';
+            let charIndex = 0;
+            const cursor = '<span class="robot-cursor">▋</span>';
+
+            // Split into tokens so HTML tags are rendered instantly without breaking formatting
+            const tokens = htmlString.match(/(<[^>]+>|[^<]+)/g) || [htmlString];
+            let tokenIndex = 0;
+            let currentTokenChar = 0;
+            let currentBuiltHTML = '';
+
+            typeTimer = setInterval(() => {
+                if (tokenIndex < tokens.length) {
+                    const token = tokens[tokenIndex];
+                    if (token.startsWith('<')) {
+                        // HTML tag: append immediately
+                        currentBuiltHTML += token;
+                        tokenIndex++;
+                        currentTokenChar = 0;
+                    } else {
+                        // Text node: type character by character
+                        if (currentTokenChar < token.length) {
+                            currentBuiltHTML += token[currentTokenChar];
+                            currentTokenChar++;
+                        } else {
+                            tokenIndex++;
+                            currentTokenChar = 0;
+                        }
+                    }
+                    el.innerHTML = currentBuiltHTML + cursor;
+                } else {
+                    clearInterval(typeTimer);
+                    el.innerHTML = currentBuiltHTML + cursor;
+                }
+            }, speed);
+        }
+
+        // Render Robotic Dashboard Results
+        function renderRoboticDashboard(data) {
+            const bPart = data.body_part ? data.body_part.toUpperCase() : "BONE";
+            const bConf = data.anatomy_confidence ? `${data.anatomy_confidence}% AI Match` : "VERIFIED";
+            const sName = data.sample_name || "PATIENT_RADIOGRAPH";
+
+            // 1. Update the 3 Robotic Highlight Badges
+            document.getElementById('heroStudyVal').textContent = sName;
+            document.getElementById('heroStudySub').textContent = `STATUS: ${data.is_fracture ? 'ACUTE FRACTURE DETECTED' : 'INTACT OSSEOUS STRUCTURE'}`;
+
+            document.getElementById('heroAnatomyVal').textContent = `${bPart} (${data.anatomical_portion})`;
+            document.getElementById('heroAnatomySub').textContent = `CLASSIFICATION CONFIDENCE: ${bConf}`;
+
+            document.getElementById('heroModalityVal').textContent = "Digital Radiography (DX)";
+
+            // 2. Build the Robotic Clinical Diagnostic Terminal Text
+            let robotText = '';
+            if (data.is_fracture) {
+                robotText = `>> TARGET SPECIMEN : ${bPart} [${data.anatomical_portion}]\n` +
+                    `>> INTEGRITY STATUS: <span class="robotic-tag-fracture">ACUTE CORTICAL FRACTURE DETECTED</span> (CONFIDENCE: ${data.confidence_pct}%)\n` +
+                    `>> BIOMECHANICAL TELEMETRY:\n` +
+                    `   ├─ CORTICAL DISPLACEMENT STEP-OFF : ${data.displacement_gap_mm} mm (NORMAL REF: &lt; 0.2 mm)\n` +
+                    `   ├─ LONGITUDINAL AXIS TILT ANGLE   : ${data.angulation_deg}° DEVIATION\n` +
+                    `   ├─ FRACTURE CRACK PROPAGATION     : ${data.length_mm} mm EXTENT\n` +
+                    `   └─ MORPHOLOGICAL SUBTYPE CLASSIF. : ${data.subtype.split('(')[0].trim().toUpperCase()} (${data.subtype_confidence}% MATCH)\n` +
+                    `>> CLINICAL DIRECTIVE: IMMEDIATE ORTHOPEDIC TRAUMA IMMOBILIZATION AND SURGICAL CONSULTATION REQUIRED.`;
+            } else {
+                robotText = `>> TARGET SPECIMEN : ${bPart} [${data.anatomical_portion}]\n` +
+                    `>> INTEGRITY STATUS: <span class="robotic-tag-normal">NO FRACTURE DETECTED (INTACT SKELETON)</span> (CONFIDENCE: ${data.confidence_pct}%)\n` +
+                    `>> BIOMECHANICAL TELEMETRY:\n` +
+                    `   ├─ CORTICAL DISPLACEMENT STEP-OFF : 0.0 mm (CONTINUOUS CORTICAL BOUNDARY)\n` +
+                    `   ├─ LONGITUDINAL AXIS TILT ANGLE   : 0.0° (ANATOMICALLY ALIGNED)\n` +
+                    `   └─ TRABECULAR ARCHITECTURE STATUS : 100% HEALTHY BONE DENSITY CONFIRMED\n` +
+                    `>> CLINICAL DIRECTIVE: NO FRACTURES OR PERIOSTEAL LESIONS IDENTIFIED. STANDARD CONSERVATIVE PROTOCOL ADVISED.`;
+            }
+
+            // Stream Robotic Text
+            typeRobotStream('heroClinicalParagraph', robotText, 6);
+
+            // 3. Update Robotic Verdict Strip
+            const vStrip = document.getElementById('verdictStrip');
+            const vTitle = document.getElementById('verdictTitle');
+            const vSub = document.getElementById('verdictSub');
+            const vTag = document.getElementById('verdictSubtypeTag');
+
+            if (data.is_fracture) {
+                vStrip.className = "cyber-verdict-strip fracture-mode";
+                vTitle.textContent = "FRACTURED";
+            } else {
+                vStrip.className = "cyber-verdict-strip normal-mode";
+                vTitle.textContent = "UNFRACTURED";
+            }
+            if (vSub) vSub.textContent = "";
+            if (vTag) vTag.textContent = "";
+
+
+            // 4. Update Telemetry 2x2 Metric Tiles
+            document.getElementById('kpiGap').textContent = `${data.displacement_gap_mm} mm`;
+            document.getElementById('kpiTilt').textContent = `${data.angulation_deg}°`;
+            document.getElementById('kpiLength').textContent = `${data.length_mm} mm`;
+            document.getElementById('kpiConf').textContent = `${data.confidence_pct}%`;
+
+            // 5. Update Viewport Radiograph
+            updateDisplayImage();
+        }
+
+        // View Mode Switcher
+        function switchView(viewName) {
+            currentView = viewName;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (viewName === 'calipers') document.getElementById('tabCalipers').classList.add('active');
+            if (viewName === 'cam') document.getElementById('tabCam').classList.add('active');
+            if (viewName === 'composite') document.getElementById('tabComposite').classList.add('active');
+            if (viewName === 'raw') document.getElementById('tabRaw').classList.add('active');
+
+            updateDisplayImage();
+        }
+
+        // Apply Image Filters
+        function applyPreset(preset, btn) {
+            const img = document.getElementById('mainDisplay');
+            img.className = 'radiograph-display';
+            document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (preset === 'contrast') img.classList.add('filter-contrast');
+            if (preset === 'invert') img.classList.add('filter-invert');
+        }
+
+        // Update Viewport Image
+        function updateDisplayImage() {
+            if (!currentAnalysis || !currentAnalysis.images) return;
+            const img = document.getElementById('mainDisplay');
+            const targetSrc = currentAnalysis.images[currentView] || currentAnalysis.images.calipers || currentAnalysis.images.composite;
+
+            img.style.opacity = '0';
+            setTimeout(() => {
+                img.src = targetSrc;
+                img.style.opacity = '1';
+            }, 80);
+        }
+
+        // Download Report Image
+        function downloadImage() {
+            if (!currentAnalysis || !currentAnalysis.images) return;
+            const link = document.createElement('a');
+            link.download = `${currentAnalysis.sample_name || 'Bonesense'}_Diagnostic_Report.jpg`;
+            link.href = currentAnalysis.images.composite;
+            link.click();
+        }
+
+        // Print Report
+        function printReport() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+{
+  "timestamp": "2026-09-16 13:55:49",
+  "device": "cpu",
+  "pillars": {
+    "pillar_1_architecture": {
+      "status": "PASS",
+      "total_parameters": 12952235,
+      "model_size_mb": 49.41,
+      "nan_detected": false,
+      "inf_detected": false,
+      "forward_sanity": true,
+      "dual_view_cross_attention": "VERIFIED"
+    },
+    "pillar_2_dataset": {
+      "status": "PASS",
+      "train_samples": 44,
+      "test_samples": 10,
+      "data_leakage_count": 0,
+      "corrupted_images": 0
+    },
+    "pillar_3_calibration": {
+      "status": "FAIL",
+      "mean_fracture_confidence": 0.7233,
+      "mean_normal_confidence": 0.0233,
+      "confidence_margin": 0.7001,
+      "brier_score": 0.06835
+    },
+    "pillar_4_stress_test": {
+      "status": "PASS",
+      "average_stress_accuracy": 92.22,
+      "minimum_stress_accuracy": 90.0,
+      "scenarios": {
+        "Clean Baseline": {
+          "accuracy": 0.9,
+          "mean_prob": 0.3733
+        },
+        "Tissue Quantum Mottle (sigma=0.06)": {
+          "accuracy": 0.9,
+          "mean_prob": 0.3829
+        },
+        "Tissue Quantum Mottle (sigma=0.10)": {
+          "accuracy": 0.9,
+          "mean_prob": 0.3841
+        },
+        "Clinical Underexposure (-12%)": {
+          "accuracy": 1.0,
+          "mean_prob": 0.4315
+        },
+        "Clinical Overexposure (+12%)": {
+          "accuracy": 0.9,
+          "mean_prob": 0.4016
+        },
+        "Window Leveling Low Contrast (x0.85)": {
+          "accuracy": 0.9,
+          "mean_prob": 0.5103
+        },
+        "Window Leveling High Contrast (x1.20)": {
+          "accuracy": 1.0,
+          "mean_prob": 0.4521
+        },
+        "Patient Table Tilt (Rotation 4 deg)": {
+          "accuracy": 0.9,
+          "mean_prob": 0.4107
+        },
+        "Motion Blur (Gaussian Kernel)": {
+          "accuracy": 0.9,
+          "mean_prob": 0.407
+        }
+      }
+    },
+    "pillar_5_localization": {
+      "status": "PASS",
+      "bboxes_valid": true,
+      "biomech_calipers_valid": true,
+      "sample_verifications": [
+        {
+          "filename": "img_001.png",
+          "type": "Fracture",
+          "confidence": 0.7698,
+          "bbox": [
+            319,
+            73,
+            512,
+            409
+          ],
+          "bbox_valid": true,
+          "angulation_deg": 45.0,
+          "displacement_gap_mm": 12.6,
+          "length_mm": 58.1,
+          "portion": "Diaphyseal Shaft [Lateral / Oblique View - Cortical Alignment]"
+        },
+        {
+          "filename": "img_005.png",
+          "type": "Fracture",
+          "confidence": 0.7112,
+          "bbox": [
+            312,
+            73,
+            500,
+            345
+          ],
+          "bbox_valid": true,
+          "angulation_deg": 45.0,
+          "displacement_gap_mm": 10.3,
+          "length_mm": 49.6,
+          "portion": "Diaphyseal Shaft [Lateral / Oblique View - Cortical Alignment]"
+        },
+        {
+          "filename": "img_010.png",
+          "type": "Fracture",
+          "confidence": 0.2686,
+          "bbox": [
+            229,
+            108,
+            498,
+            361
+          ],
+          "bbox_valid": true,
+          "angulation_deg": 45.0,
+          "displacement_gap_mm": 10.0,
+          "length_mm": 55.4,
+          "portion": "Diaphyseal Shaft [Lateral / Oblique View - Cortical Alignment]"
+        },
+        {
+          "filename": "normal_001.png",
+          "type": "Normal",
+          "confidence": 0.027,
+          "bbox": [
+            312,
+            226,
+            501,
+            328
+          ],
+          "bbox_valid": true,
+          "angulation_deg": 45.0,
+          "displacement_gap_mm": 12.4,
+          "length_mm": 32.2,
+          "portion": "Diaphyseal Shaft [Lateral / Oblique View - Cortical Alignment]"
+        },
+        {
+          "filename": "normal_004.png",
+          "type": "Normal",
+          "confidence": 0.0118,
+          "bbox": [
+            317,
+            217,
+            467,
+            327
+          ],
+          "bbox_valid": true,
+          "angulation_deg": 2.7,
+          "displacement_gap_mm": 10.8,
+          "length_mm": 27.9,
+          "portion": "Diaphyseal Shaft [Lateral / Oblique View - Cortical Alignment]"
+        },
+        {
+          "filename": "normal_009.png",
+          "type": "Normal",
+          "confidence": 0.0152,
+          "bbox": [
+            350,
+            239,
+            467,
+            325
+          ],
+          "bbox_valid": true,
+          "angulation_deg": 9.8,
+          "displacement_gap_mm": 7.5,
+          "length_mm": 21.8,
+          "portion": "Diaphyseal Shaft [Lateral / Oblique View - Cortical Alignment]"
+        }
+      ]
+    },
+    "pillar_6_latency": {
+      "status": "FAIL",
+      "mean_latency_ms": 676.16,
+      "p95_latency_ms": 715.4,
+      "throughput_fps": 1.5
+    }
+  },
+  "overall_score_pct": 66.7,
+  "verdict": "QUALIFIED DEPLOYABLE"
+}

@@ -1,0 +1,11 @@
+# Core Deep Learning (CPU optimized)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+torchvision
+
+# Computer Vision & Image Processing
+opencv-python-headless
+Pillow
+numpy
+matplotlib
+scikit-learn
