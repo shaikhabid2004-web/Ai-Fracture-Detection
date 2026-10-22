@@ -43,9 +43,9 @@
 \author[dept]{Prof.~Vikas Kumar\corref{cor2}}
 \cortext[cor2]{Project Guide, Research Supervisor, and Faculty Mentor.}
 
-\affiliation[dept]{organization={Department of Computer Science and Engineering},
-            institution={Savitribai Phule Pune University Affiliated Engineering Institute},
-            city={Pune},
+\affiliation[dept]{organization={Department Masters Of Computer Application},
+            institution={Sanjivani university Kopargaon School Of Engineering Institute},
+            city={Kopargaon},
             state={Maharashtra},
             country={India}}
 
@@ -142,6 +142,7 @@ Images are standardized to $512 \times 512$ using an aspect ratio scaling factor
 
 \begin{figure*}[t]
 \centering
+\resizebox{0.96\textwidth}{!}{%
 \begin{tikzpicture}[
     box/.style={rectangle, draw=black!70, fill=blue!8, rounded corners=3pt, text width=2.4cm, minimum height=1.1cm, align=center, font=\scriptsize\sffamily},
     streamA/.style={rectangle, draw=cyan!80!black, fill=cyan!12, rounded corners=3pt, text width=2.6cm, minimum height=1.2cm, align=center, font=\scriptsize\sffamily},
@@ -174,7 +175,8 @@ Images are standardized to $512 \times 512$ using an aspect ratio scaling factor
 \draw[arrow] (cbam.east) -- ++(0.5,0) |- (sub.west);
 \draw[arrow] (cbam.south) -- (caliper.north);
 
-\end{tikzpicture}
+\end{tikzpicture}%
+}
 \caption{End-to-End Deep Architectural Pipeline of BoneSense AI: Decoupled Semantic and Spatial Bone Edge Streams with CBAM Attention and Multi-Task Diagnostic Telemetry.}
 \label{fig:architecture}
 \end{figure*}
@@ -345,6 +347,7 @@ Qualitative clinical diagnostic outputs are showcased in Fig.~\ref{fig:tibia_fra
         \IfFileExists{img_008_fracture_report.jpg}{%
             \includegraphics[width=0.98\textwidth]{img_008_fracture_report.jpg}%
         }{%
+            \resizebox{\textwidth}{!}{%
             \begin{tikzpicture}[x=1cm, y=1cm]
             % Background banner
             \fill[black!95] (0, 3.8) rectangle (16.2, 4.6);
@@ -401,7 +404,8 @@ Qualitative clinical diagnostic outputs are showcased in Fig.~\ref{fig:tibia_fra
             \draw[fill=gray!50, draw=white!90, line width=0.8pt] (15.2, 0.2) -- (15.1, 3.4) -- (15.9, 3.4) -- (15.9, 0.2) -- cycle;
             \draw[cyan!90!white, line width=1.0pt, dashed] (14.15, 1.8) -- (14.9, 1.6);
             \node[font=\sffamily\tiny\bfseries, text=cyan!80!white] at (14.85, 0.25) {Enhanced Cortical};
-            \end{tikzpicture}
+            \end{tikzpicture}%
+            }%
         }%
     }%
 }
@@ -420,6 +424,7 @@ Qualitative clinical diagnostic outputs are showcased in Fig.~\ref{fig:tibia_fra
         \IfFileExists{img_001_fracture_report.jpg}{%
             \includegraphics[width=0.98\textwidth]{img_001_fracture_report.jpg}%
         }{%
+            \resizebox{\textwidth}{!}{%
             \begin{tikzpicture}[x=1cm, y=1cm]
             % Background banner
             \fill[black!95] (0, 3.8) rectangle (16.2, 4.6);
@@ -472,7 +477,8 @@ Qualitative clinical diagnostic outputs are showcased in Fig.~\ref{fig:tibia_fra
             \draw[fill=gray!40, draw=white!80, line width=0.8pt] (14.0, 0.4) .. controls (13.9, 1.8) and (14.2, 2.8) .. (14.8, 3.3) .. controls (15.5, 2.8) and (15.7, 1.8) .. (15.4, 0.4) -- cycle;
             \draw[cyan!90!white, line width=1.0pt, dashed] (14.2, 1.9) -- (15.1, 1.7);
             \node[font=\sffamily\tiny\bfseries, text=cyan!80!white] at (14.85, 0.25) {Enhanced Cortical};
-            \end{tikzpicture}
+            \end{tikzpicture}%
+            }%
         }%
     }%
 }
@@ -565,7 +571,7 @@ In this paper, we presented \textbf{BoneSense AI}, an end-to-end deep learning f
 The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
 
 \section*{Acknowledgment}
-The authors extend their sincere gratitude to the Department of Computer Science and Engineering for providing the computational research facilities, and to the clinical curators of the Stanford MURA v1.1 and FracAtlas open-access medical databases.
+The authors extend their sincere gratitude to the Department Masters Of Computer Application, Sanjivani University Kopargaon School Of Engineering Institute for providing the computational research facilities, and to the clinical curators of the Stanford MURA v1.1 and FracAtlas open-access medical databases.
 
 % =========================================================================
 % REFERENCES
