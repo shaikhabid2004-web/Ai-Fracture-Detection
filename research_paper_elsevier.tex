@@ -15,7 +15,6 @@
 \usepackage{hyperref}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, fit, backgrounds}
-\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, fit, backgrounds}
 
 \hypersetup{
     colorlinks=true,
@@ -333,114 +332,92 @@ Standard ResNet-50 Baseline & 84.2 & 81.5 & 86.9 & 0.839 & 0.892 & 480.0 & Plain
 
 As detailed in Table~\ref{tab:comparison}, BoneSense AI achieves superior overall accuracy (\textbf{92.4\%}) and exceptional trauma sensitivity (\textbf{94.1\%}), outperforming \textit{FracNet} (\textit{Pattern Recognition Letters}, 2025) by $+3.2\%$ in accuracy and $+6.3\%$ in trauma sensitivity. In acute trauma care, high sensitivity is paramount; false negatives (missed fractures) frequently lead to malalignment or permanent disability. Furthermore, BoneSense AI maintains an ultra-low inference latency of $310\text{ ms}$ on commodity CPU hardware, significantly faster than DenseNet-121 ($593.4\text{ ms}$) and standard ResNet-50 ($480\text{ ms}$).
 
+Qualitative clinical diagnostic outputs are showcased in Fig.~\ref{fig:tibia_fracture} for acute displaced lower leg (Tibia--Fibula) fractures (\texttt{img\_008}) and in Fig.~\ref{fig:foot_fracture} for multi-bone foot trauma (\texttt{img\_001}), validating how Layer-3/4 Grad-CAM++ prevents gradient dispersion across complex overlapping joints while our calibrated caliper engine computes millimeter step-off extent ($39.3\text{ mm}$ and $73.1\text{ mm}$, respectively).
 
 \begin{figure*}[t]
 \centering
-\begin{tikzpicture}[
-    imgbox/.style={rectangle, draw=black!40, fill=black!5, text width=3.6cm, minimum height=3.6cm, align=center, inner sep=2pt, font=\scriptsize\sffamily},
-    tagbox/.style={rectangle, draw=blue!60, fill=blue!10, rounded corners=2pt, font=\bfseries\tiny\sffamily, inner sep=3pt}
-]
-
-% Panel (a)
-\node[imgbox] (p1) at (0, 0) {
-    \textbf{(a) Raw Enhanced Radiograph}\\[4pt]
-    \begin{tikzpicture}[scale=0.8]
-        \draw[fill=gray!30, rounded corners=3pt] (0,0) rectangle (2.8,3.2);
-        \draw[fill=white, draw=black!80, line width=0.8pt] (0.5, 0.2) -- (0.5, 1.4) -- (0.45, 1.7) -- (0.5, 3.0) -- (1.1, 3.0) -- (1.1, 1.7) -- (1.15, 1.4) -- (1.1, 0.2) -- cycle;
-        \draw[red, line width=1.5pt] (0.45, 1.7) -- (1.15, 1.4);
-        \draw[fill=white, draw=black!80, line width=0.8pt] (1.5, 0.2) -- (1.5, 3.0) -- (2.1, 3.0) -- (2.1, 0.2) -- cycle;
-    \end{tikzpicture}\\[3pt]
-    \scriptsize Distal Radius Cortical Line
-};
-
-% Panel (b)
-\node[imgbox] (p2) at (4.3, 0) {
-    \textbf{(b) Layer-3/4 Grad-CAM++}\\[4pt]
-    \begin{tikzpicture}[scale=0.8]
-        \draw[fill=gray!30, rounded corners=3pt] (0,0) rectangle (2.8,3.2);
-        \draw[fill=white, draw=black!80, line width=0.8pt] (0.5, 0.2) -- (0.5, 3.0) -- (1.1, 3.0) -- (1.1, 0.2) -- cycle;
-        \draw[fill=white, draw=black!80, line width=0.8pt] (1.5, 0.2) -- (1.5, 3.0) -- (2.1, 3.0) -- (2.1, 0.2) -- cycle;
-        \draw[fill=yellow!50, draw=none, opacity=0.6] (0.8, 1.55) circle (0.65cm);
-        \draw[fill=orange!70, draw=none, opacity=0.7] (0.8, 1.55) circle (0.45cm);
-        \draw[fill=red!90, draw=none, opacity=0.8] (0.8, 1.55) circle (0.25cm);
-    \end{tikzpicture}\\[3pt]
-    \scriptsize Sub-Millimeter Focus Zone
-};
-
-% Panel (c)
-\node[imgbox] (p3) at (8.6, 0) {
-    \textbf{(c) Biomechanical Calipers}\\[4pt]
-    \begin{tikzpicture}[scale=0.8]
-        \draw[fill=gray!30, rounded corners=3pt] (0,0) rectangle (2.8,3.2);
-        \draw[fill=white, draw=black!80, line width=0.8pt] (0.5, 0.2) -- (0.5, 1.4) -- (0.45, 1.7) -- (0.5, 3.0) -- (1.1, 3.0) -- (1.1, 1.7) -- (1.15, 1.4) -- (1.1, 0.2) -- cycle;
-        \draw[fill=white, draw=black!80, line width=0.8pt] (1.5, 0.2) -- (1.5, 3.0) -- (2.1, 3.0) -- (2.1, 0.2) -- cycle;
-        \draw[cyan, line width=1.2pt, {Bar[width=4pt]}-{Bar[width=4pt]}] (0.45, 1.7) -- (1.15, 1.4);
-        \node[font=\tiny\bfseries, cyan!90!black] at (0.8, 1.85) {G: 2.85 mm};
-        \draw[green!70!black, line width=1.0pt, dashed] (0.2, 1.55) -- (1.4, 1.55);
-        \node[font=\tiny\bfseries, green!60!black] at (1.8, 1.55) {$\theta: 14.2^\circ$};
-    \end{tikzpicture}\\[3pt]
-    \scriptsize Orthopedic Discontinuity Vectors
-};
-
-% Panel (d)
-\node[imgbox] (p4) at (12.9, 0) {
-    \textbf{(d) PACS Clinical Telemetry}\\[4pt]
-    \begin{tikzpicture}[scale=0.8]
-        \draw[fill=black!90, rounded corners=3pt] (0,0) rectangle (2.8,3.2);
-        \node[font=\tiny\bfseries, text=cyan] at (1.4, 2.8) {>> TARGET: FOREARM};
-        \node[font=\tiny\bfseries, text=red!80] at (1.4, 2.3) {ACUTE FRACTURE DETECTED};
-        \node[font=\tiny, text=white] at (1.4, 1.7) {Confidence: 98.4\%};
-        \node[font=\tiny, text=white] at (1.4, 1.3) {Gap Step-Off: 2.85 mm};
-        \node[font=\tiny, text=white] at (1.4, 0.9) {Angulation Tilt: 14.2$^\circ$};
-        \node[font=\tiny, text=green!80] at (1.4, 0.5) {Subtype: Comminuted};
-    \end{tikzpicture}\\[3pt]
-    \scriptsize Autonomous PACS Diagnostic Report
-};
-
-\end{tikzpicture}
-\caption{Qualitative Multi-Planar Radiographic Diagnostic Pipeline of BoneSense AI: (a) Input Radiograph with trabecular contrast enhancement, (b) High-Resolution Layer-3/4 Grad-CAM++ Activation Heatmap, (c) Biomechanical Caliper telemetry with Step-Off Gap ($G=2.85\text{ mm}$) and Angulation ($\theta=14.2^\circ$), and (d) Autonomous Orthopedic PACS Diagnostic Summary.}
-\label{fig:results}
+\IfFileExists{figures/figure_tibia_fracture.jpg}{%
+    \includegraphics[width=0.98\textwidth]{figures/figure_tibia_fracture.jpg}%
+}{%
+    \IfFileExists{figure_tibia_fracture.jpg}{%
+        \includegraphics[width=0.98\textwidth]{figure_tibia_fracture.jpg}%
+    }{%
+        \IfFileExists{img_008_fracture_report.jpg}{%
+            \includegraphics[width=0.98\textwidth]{img_008_fracture_report.jpg}%
+        }{%
+            \fbox{\rule{0pt}{4.2cm}\rule{0.95\textwidth}{0pt}\centering\textbf{[Upload figure\_tibia\_fracture.jpg or img\_008\_fracture\_report.jpg to Overleaf]}}%
+        }%
+    }%
+}
+\caption{Qualitative Clinical Diagnostic Evaluation of BoneSense AI on Acute Lower Leg (Tibia--Fibula) Fracture Study (\texttt{img\_008}). From left to right: Dual-projection input radiographs (AP and Lateral views), High-Resolution Layer-3/4 Grad-CAM++ spatial attention heatmaps isolating the displaced cortical fracture, and bounding box localization with center crosshair caliper marker ($39.3\text{ mm}$ fracture extent, $99.3\%$ diagnostic confidence).}
+\label{fig:tibia_fracture}
 \end{figure*}
+
+\begin{figure*}[t]
+\centering
+\IfFileExists{figures/figure_foot_fracture.jpg}{%
+    \includegraphics[width=0.98\textwidth]{figures/figure_foot_fracture.jpg}%
+}{%
+    \IfFileExists{figure_foot_fracture.jpg}{%
+        \includegraphics[width=0.98\textwidth]{figure_foot_fracture.jpg}%
+    }{%
+        \IfFileExists{img_001_fracture_report.jpg}{%
+            \includegraphics[width=0.98\textwidth]{img_001_fracture_report.jpg}%
+        }{%
+            \fbox{\rule{0pt}{4.2cm}\rule{0.95\textwidth}{0pt}\centering\textbf{[Upload figure\_foot\_fracture.jpg or img\_001\_fracture\_report.jpg to Overleaf]}}%
+        }%
+    }%
+}
+\caption{Qualitative Diagnostic Localization on Multi-Osseous Foot / Metatarsal Trauma Study (\texttt{img\_001}). Shows raw multi-angle projections, Grad-CAM++ spatial activation maps resolving complex multi-bone overlapping regions, and bounding box localization ($73.1\text{ mm}$ propagation extent, $100.0\%$ diagnostic confidence).}
+\label{fig:foot_fracture}
+\end{figure*}
+
 
 \subsection{Anatomical Site-Wise Disaggregation}
 Table~\ref{tab:anatomy} summarizes model performance across the four primary anatomical extremities. The framework achieves remarkable diagnostic consistency across diverse bone densities, maintaining $>91\%$ accuracy in complex multi-osseous joints such as the Wrist and Ankle.
 
-\begin{table}[h]
+\begin{table}[!ht]
 \centering
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{1.15}
 \caption{Diagnostic Performance Across Anatomical Extremity Zones}
 \label{tab:anatomy}
-\begin{tabular}{lcccc}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lcccc@{}}
 \toprule
-\textbf{Anatomical Zone} & \textbf{Accuracy (\%)} & \textbf{Sens. (\%)} & \textbf{Spec. (\%)} & \textbf{AUC-ROC} \\
+\textbf{Anatomical Zone} & \textbf{Acc. (\%)} & \textbf{Sens. (\%)} & \textbf{Spec. (\%)} & \textbf{AUC} \\
 \midrule
-Wrist / Forearm (Radius--Ulna) & 93.6 & 95.2 & 92.0 & 0.965 \\
-Lower Leg / Ankle (Tibia--Fibula) & 92.8 & 94.7 & 90.9 & 0.961 \\
+Wrist / Forearm & 93.6 & 95.2 & 92.0 & 0.965 \\
+Lower Leg / Ankle & 92.8 & 94.7 & 90.9 & 0.961 \\
 Shoulder / Clavicle & 91.5 & 93.1 & 89.9 & 0.952 \\
 Pelvis / Hip & 91.7 & 93.4 & 90.0 & 0.954 \\
 \midrule
-\textbf{Overall Macro Average} & \textbf{92.4} & \textbf{94.1} & \textbf{90.7} & \textbf{0.958} \\
+\textbf{Macro Average} & \textbf{92.4} & \textbf{94.1} & \textbf{90.7} & \textbf{0.958} \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 
 \subsection{Ablation Study}
 To evaluate the contribution of individual architectural components, an ablation study was conducted (Table~\ref{tab:ablation}).
 
-\begin{table}[h]
+\begin{table}[!ht]
 \centering
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{1.15}
 \caption{Ablation Study of Proposed Architectural Modules}
 \label{tab:ablation}
-\begin{tabular}{lcccc}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lcccc@{}}
 \toprule
-\textbf{Configuration} & \textbf{Accuracy} & \textbf{Sensitivity} & \textbf{F1-Score} & \textbf{AUC} \\
+\textbf{Configuration} & \textbf{Acc. (\%)} & \textbf{Sens. (\%)} & \textbf{F1} & \textbf{AUC} \\
 \midrule
-(A) Plain ResNet-50 Baseline & 84.2\% & 81.5\% & 0.839 & 0.892 \\
-(B) + CLAHE Preprocessing & 86.8\% & 85.1\% & 0.865 & 0.914 \\
-(C) + Spatial Bone Edge Stream & 89.1\% & 88.7\% & 0.889 & 0.933 \\
-(D) + CBAM Attention Block & 91.3\% & 92.0\% & 0.912 & 0.949 \\
-(E) + Layer-3/4 Grad-CAM++ & \textbf{92.4\%} & \textbf{94.1\%} & \textbf{0.924} & \textbf{0.958} \\
+(A) Plain ResNet-50 & 84.2 & 81.5 & 0.839 & 0.892 \\
+(B) + CLAHE Preproc. & 86.8 & 85.1 & 0.865 & 0.914 \\
+(C) + Spatial Bone Edge & 89.1 & 88.7 & 0.889 & 0.933 \\
+(D) + CBAM Attention & 91.3 & 92.0 & 0.912 & 0.949 \\
+(E) + Layer-3/4 Grad-CAM & \textbf{92.4} & \textbf{94.1} & \textbf{0.924} & \textbf{0.958} \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 
 The findings confirm that the explicit \textit{Spatial Bone Edge Stream} provides a $+2.3\%$ boost over preprocessing alone by extracting high-frequency cortical discontinuities, while the \textit{CBAM Attention Block} provides an additional $+2.2\%$ gain by suppressing irrelevant soft-tissue representations.
