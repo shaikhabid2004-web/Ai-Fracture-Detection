@@ -1,4 +1,4 @@
-\documentclass[10pt,journal,compsoc]{IEEEtran}
+\documentclass[journal]{IEEEtran}
 
 % Required Packages for High-Impact Medical AI Publications
 \usepackage{amsmath,amssymb,amsfonts}
@@ -27,7 +27,7 @@
 
 \IEEEtitleabstractindextext{%
 \begin{abstract}
-Acute musculoskeletal trauma constitutes over 30\% of emergency department presentations, where rapid, accurate radiographic diagnosis is vital to prevent improper osseous consolidation and long-term joint morbidity. However, contemporary deep learning methods, including recent state-of-the-art frameworks such as \textit{FracNet (2025)}, \textit{Novel Transfer Learning Radiography (2025)}, and \textit{Hybrid SFNet (2025)}, operate largely as opaque categorical classifiers. They frequently struggle with overlapping cortical shafts (e.g., Radius--Ulna and Tibia--Fibula), blur multi-fragment crack zones, and fail to provide orthopedic surgeons with quantitative biomechanical measurements. In this paper, we propose \textbf{BoneSense AI™}, an end-to-end clinical Artificial Intelligence and Picture Archiving and Communication System (PACS) workstation that combines multi-site anatomical awareness, dual-stream feature representation, explainable crack localization, and sub-millimeter surgical caliper telemetry. The architecture introduces a \textit{DualBoneFractureNetwork} integrating a deep ResNet-50 semantic backbone with an edge-guided \textit{Spatial Bone Stream}, unified through a Convolutional Block Attention Module (CBAM) that dynamically prioritizes high-frequency cortical interruptions. A deterministic \textit{Vertical Projection Profiling} algorithm is formulated to isolate overlapping bone shafts, while an enhanced \textit{Layer-3/4 Grad-CAM++} engine calculates higher-order spatial derivatives to resolve hairline crack fissures without spatial blurring. Crucially, we incorporate a physical caliper engine calibrated to orthopedic DICOM pixel spacing ($0.150\text{ mm/pixel}$), outputting cortical step-off displacement gap ($G$ in mm), axis angulation tilt ($\theta^\circ$), and multi-task morphological fracture subtyping. Rigorous validation on a combined multi-site benchmark comprising the Stanford MURA v1.1 corpus (40,009 radiographs) and the FracAtlas benchmark (4,083 radiographs) demonstrates that BoneSense AI achieves an overall classification accuracy of \textbf{92.4\%}, a trauma sensitivity of \textbf{94.1\%}, a specificity of \textbf{90.7\%}, and an Area Under the ROC Curve (AUC-ROC) of \textbf{0.958}, outperforming standard ResNet baselines by $+8.2\%$ accuracy and $+12.6\%$ sensitivity while reducing missed hairline fissures by $21.2\%$. An autonomous 4-zone anatomical classifier achieves \textbf{96.5\%} accuracy across wrist, leg, shoulder, and pelvic studies with an ultra-low inference latency of $310\text{ ms}$ on commodity CPU hardware.
+Acute musculoskeletal trauma constitutes over 30\% of emergency department presentations, where rapid, accurate radiographic diagnosis is vital to prevent improper osseous consolidation and long-term joint morbidity. However, contemporary deep learning methods, including recent state-of-the-art frameworks such as \textit{FracNet (2025)}, \textit{Novel Transfer Learning Radiography (2025)}, and \textit{Hybrid SFNet (2025)}, operate largely as opaque categorical classifiers. They frequently struggle with overlapping cortical shafts (e.g., Radius--Ulna and Tibia--Fibula), blur multi-fragment crack zones, and fail to provide orthopedic surgeons with quantitative biomechanical measurements. In this paper, we propose \textbf{BoneSense AI\texttrademark}, an end-to-end clinical Artificial Intelligence and Picture Archiving and Communication System (PACS) workstation that combines multi-site anatomical awareness, dual-stream feature representation, explainable crack localization, and sub-millimeter surgical caliper telemetry. The architecture introduces a \textit{DualBoneFractureNetwork} integrating a deep ResNet-50 semantic backbone with an edge-guided \textit{Spatial Bone Stream}, unified through a Convolutional Block Attention Module (CBAM) that dynamically prioritizes high-frequency cortical interruptions. A deterministic \textit{Vertical Projection Profiling} algorithm is formulated to isolate overlapping bone shafts, while an enhanced \textit{Layer-3/4 Grad-CAM++} engine calculates higher-order spatial derivatives to resolve hairline crack fissures without spatial blurring. Crucially, we incorporate a physical caliper engine calibrated to orthopedic DICOM pixel spacing ($0.150\text{ mm/pixel}$), outputting cortical step-off displacement gap ($G$ in mm), axis angulation tilt ($\theta^\circ$), and multi-task morphological fracture subtyping. Rigorous validation on a combined multi-site benchmark comprising the Stanford MURA v1.1 corpus (40,009 radiographs) and the FracAtlas benchmark (4,083 radiographs) demonstrates that BoneSense AI achieves an overall classification accuracy of \textbf{92.4\%}, a trauma sensitivity of \textbf{94.1\%}, a specificity of \textbf{90.7\%}, and an Area Under the ROC Curve (AUC-ROC) of \textbf{0.958}, outperforming standard ResNet baselines by $+8.2\%$ accuracy and $+12.6\%$ sensitivity while reducing missed hairline fissures by $21.2\%$. An autonomous 4-zone anatomical classifier achieves \textbf{96.5\%} accuracy across wrist, leg, shoulder, and pelvic studies with an ultra-low inference latency of $310\text{ ms}$ on commodity CPU hardware.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -44,17 +44,17 @@ Bone fracture detection, Musculoskeletal Radiography, Deep Learning, Dual-Stream
 \section{Introduction}
 \IEEEPARstart{M}{usculoskeletal} trauma and bone fractures represent one of the most frequent clinical emergencies globally, comprising approximately one-third of all emergency room visits~\cite{rajpurkar2017mura}. Prompt radiographic identification and accurate surgical characterization of fracture patterns are paramount; delayed intervention or missed diagnoses can lead to avascular necrosis, non-union, malalignment, and chronic functional impairment~\cite{fracatlas2023}. 
 
-In recent years, deep convolutional neural networks (CNNs) have emerged as powerful tools for medical imaging. State-of-the-art benchmarks published in 2025, notably \textit{FracNet: An End-to-End Deep Learning Framework for Bone Fracture Detection}~\cite{fracnet2025}, \textit{Novel Transfer Learning Based Bone Fracture Detection Using Radiographic Images}~\cite{novel_transfer2025}, and \textit{Hybrid SFNet for Multi-Site Bone Fracture Detection}~\cite{sfnet2025}, have demonstrated remarkable capabilities in identifying fractures across various anatomical distributions. 
+In recent years, deep convolutional neural networks (CNNs) have emerged as powerful tools for medical imaging. State-of-the-art benchmarks published in 2025, notably \textit{FracNet: An End-to-End Deep Learning Framework for Bone Fracture Detection}~\cite{fracnet2025}, \textit{Novel Transfer Learning Based Bone Fracture Detection Using Radiographic Images}~\cite{noveltransfer2025}, and \textit{Hybrid SFNet for Multi-Site Bone Fracture Detection}~\cite{sfnet2025}, have demonstrated remarkable capabilities in identifying fractures across various anatomical distributions. 
 
 However, translating these algorithmic advancements into real-world orthopedic trauma workflows reveals critical clinical and mathematical limitations:
 \begin{enumerate}
-    \item \textbf{The Overlapping Shaft Blindspot:} In human extremity anatomy, paired long bones—specifically the Forearm (Radius and Ulna) and the Lower Leg (Tibia and Fibula)—consistently overlap on standard anterior-posterior (AP) and lateral projections. Conventional CNNs, including transfer learning pipelines~\cite{novel_transfer2025}, treat contiguous radiographic densities as unified monolithic masses, frequently obscuring subtle undisplaced fissures along adjacent cortical margins.
+    \item \textbf{The Overlapping Shaft Blindspot:} In human extremity anatomy, paired long bones---specifically the Forearm (Radius and Ulna) and the Lower Leg (Tibia and Fibula)---consistently overlap on standard anterior-posterior (AP) and lateral projections. Conventional CNNs, including transfer learning pipelines~\cite{noveltransfer2025}, treat contiguous radiographic densities as unified monolithic masses, frequently obscuring subtle undisplaced fissures along adjacent cortical margins.
     \item \textbf{Explainability Smearing in Fragmented Trauma:} While visual explainability algorithms like Class Activation Mapping (Grad-CAM)~\cite{selvaraju2017grad} are frequently applied, standard first-order gradient averaging causes heatmaps to expand into amorphous blobs across joint spaces, failing to delineate precise sub-millimeter crack trajectories in comminuted or hairline trauma.
     \item \textbf{Absence of Biomechanical Caliper Telemetry:} Existing models output binary classification probabilities ($\hat{y} \in [0, 1]$) or crude bounding box coordinates. In contrast, an orthopedic surgeon requires actionable quantitative telemetry: What is the cortical displacement step-off gap in millimeters? What is the axial angulation tilt in degrees? Is the fracture transverse, oblique, spiral, or comminuted?
     \item \textbf{Deployment Inefficiency in Low-Resource PAC Stations:} Advanced vision transformers and massive ensembles demand high-end enterprise GPU infrastructure, restricting deployment in rural emergency clinics, mobile trauma units, and cloud edge nodes.
 \end{enumerate}
 
-To bridge these gaps, this paper introduces \textbf{BoneSense AI™}, a holistic diagnostic platform that unites dual-stream deep learning with surgical caliper telemetry. The primary contributions of this work are summarized as follows:
+To bridge these gaps, this paper introduces \textbf{BoneSense AI\texttrademark}, a holistic diagnostic platform that unites dual-stream deep learning with surgical caliper telemetry. The primary contributions of this work are summarized as follows:
 \begin{itemize}
     \item We design and implement the \textbf{DualBoneFractureNetwork}, combining a deep ResNet-50 semantic feature extractor with an edge-preserving \textit{Spatial Bone Stream}. The two representations are unified through a Convolutional Block Attention Module (CBAM) that simultaneously optimizes channel-wise calcium density responses and spatial crack boundaries.
     \item We formulate an analytical \textbf{Vertical Projection Profiling Algorithm} that dynamically isolates overlapping paired bone shafts (Radius--Ulna and Tibia--Fibula) via inter-osseous valley detection.
@@ -68,11 +68,11 @@ To bridge these gaps, this paper introduces \textbf{BoneSense AI™}, a holistic
 % =========================================================================
 \section{Related Work}
 
-\subsection{Deep Learning & Segmentation Frameworks (FracNet)}
+\subsection{Deep Learning \& Segmentation Frameworks (FracNet)}
 The evolution of bone trauma detection has progressed from manual feature engineering toward end-to-end deep learning. A notable recent benchmark is \textit{FracNet: An End-to-End Deep Learning Framework for Bone Fracture Detection (2025)}~\cite{fracnet2025}, which introduced dense convolutional architectures paired with volumetric feature pyramid representations for rib and long-bone segmentation. While FracNet achieves high spatial Dice similarity coefficients in delineated fracture zones, its design is predominantly optimized for volumetric CT data or isolated anatomical regions. Consequently, it suffers performance degradation when applied to diverse multi-view planar radiographs subject to radiographic projection artifacts and soft-tissue magnification. Furthermore, FracNet lacks automated physical caliper estimation.
 
 \subsection{Transfer Learning in Radiographic Pathology}
-Transfer learning utilizing ImageNet-pretrained backbones has served as the backbone of medical computer vision. The benchmark study \textit{Novel Transfer Learning Based Bone Fracture Detection Using Radiographic Images (2025)}~\cite{novel_transfer2025} investigated fine-tuned DenseNet-121, Inception-V3, and ResNet architectures on limb radiographs, demonstrating that pre-trained weights significantly mitigate small medical sample sizes. However, standard transfer learning networks behave as pure black-box classifiers. They remain insensitive to fine, high-frequency hairline cracks (yielding false-negative rates upwards of $14\%$) and lack internal mechanisms to decouple semantic scene context from fine cortical discontinuities.
+Transfer learning utilizing ImageNet-pretrained backbones has served as the backbone of medical computer vision. The benchmark study \textit{Novel Transfer Learning Based Bone Fracture Detection Using Radiographic Images (2025)}~\cite{noveltransfer2025} investigated fine-tuned DenseNet-121, Inception-V3, and ResNet architectures on limb radiographs, demonstrating that pre-trained weights significantly mitigate small medical sample sizes. However, standard transfer learning networks behave as pure black-box classifiers. They remain insensitive to fine, high-frequency hairline cracks (yielding false-negative rates upwards of $14\%$) and lack internal mechanisms to decouple semantic scene context from fine cortical discontinuities.
 
 \subsection{Multi-Site Hybrid Networks (Hybrid SFNet)}
 To address anatomical diversity, the \textit{Hybrid SFNet for Multi-Site Bone Fracture Detection (2025)}~\cite{sfnet2025} introduced a multi-branch spatial-feature fusion network capable of classifying fractures across multiple anatomical regions (wrist, shoulder, ankle). Although SFNet improves generalization across body sites, its attention mechanisms remain coarse. Specifically, it does not decouple overlapping adjacent bone shafts, nor does it quantify structural deformity parameters such as fragment translation or angular deformity necessary for surgical planning.
@@ -244,7 +244,7 @@ Experiments were executed in PyTorch using an AdamW optimizer ($\beta_1 = 0.9, \
 \section{Results and Discussion}
 
 \subsection{Comparative Benchmarking with 2025 SOTA Models}
-To evaluate diagnostic efficacy, we compare BoneSense AI against the three baseline models published in 2025: \textit{FracNet (2025)}~\cite{fracnet2025}, \textit{Novel Transfer Learning (2025)}~\cite{novel_transfer2025}, and \textit{Hybrid SFNet (2025)}~\cite{sfnet2025}, alongside standard baseline architectures (ResNet-18, ResNet-50, MobileNet-V2, DenseNet-121).
+To evaluate diagnostic efficacy, we compare BoneSense AI against the three baseline models published in 2025: \textit{FracNet (2025)}~\cite{fracnet2025}, \textit{Novel Transfer Learning (2025)}~\cite{noveltransfer2025}, and \textit{Hybrid SFNet (2025)}~\cite{sfnet2025}, alongside standard baseline architectures (ResNet-18, ResNet-50, MobileNet-V2, DenseNet-121).
 
 Table~\ref{tab:comparison} presents quantitative performance across key clinical diagnostic metrics: Accuracy, Sensitivity (Recall), Specificity, F1-Score, and Area Under the ROC Curve (AUC-ROC).
 
@@ -262,10 +262,10 @@ DenseNet-121 (Dense Conns) & 86.8 & 84.7 & 88.9 & 0.867 & 0.918 & 593.4 & Dense 
 Standard ResNet-50 Baseline & 84.2 & 81.5 & 86.9 & 0.839 & 0.892 & 480.0 & Plain Deep Residual Stream \\
 \midrule
 \textit{FracNet (2025)}~\cite{fracnet2025} & 89.2 & 87.8 & 90.6 & 0.891 & 0.932 & 440.0 & End-to-End Segmentation (Volumetric Bias) \\
-\textit{Novel Transfer Learning (2025)}~\cite{novel_transfer2025} & 88.6 & 86.2 & 91.0 & 0.885 & 0.925 & 390.0 & Fine-Tuned DenseNet/Inception Ensemble \\
+\textit{Novel Transfer Learning (2025)}~\cite{noveltransfer2025} & 88.6 & 86.2 & 91.0 & 0.885 & 0.925 & 390.0 & Fine-Tuned DenseNet/Inception Ensemble \\
 \textit{Hybrid SFNet (2025)}~\cite{sfnet2025} & 90.5 & 89.4 & 91.6 & 0.904 & 0.941 & 365.0 & Multi-Site Spatial-Feature Fusion \\
 \midrule
-\textbf{BoneSense AI™ (Proposed)} & \textbf{92.4} & \textbf{94.1} & \textbf{90.7} & \textbf{92.4} & \textbf{0.958} & 310.0 & \textbf{Dual-Stream + CBAM + Caliper Telemetry} \\
+\textbf{BoneSense AI\texttrademark (Proposed)} & \textbf{92.4} & \textbf{94.1} & \textbf{90.7} & \textbf{92.4} & \textbf{0.958} & 310.0 & \textbf{Dual-Stream + CBAM + Caliper Telemetry} \\
 \bottomrule
 \end{tabularx}
 \end{table*}
@@ -315,7 +315,7 @@ To evaluate the contribution of individual architectural components, an ablation
 
 The findings confirm that the explicit \textit{Spatial Bone Edge Stream} provides a $+2.3\%$ boost over preprocessing alone by extracting high-frequency cortical discontinuities, while the \textit{CBAM Attention Block} provides an additional $+2.2\%$ gain by suppressing irrelevant soft-tissue representations.
 
-\subsection{Radiographic Stress & Exposure Invariance Testing}
+\subsection{Radiographic Stress \& Exposure Invariance Testing}
 To demonstrate clinical robustness in real-world environments, BoneSense AI was evaluated against digital exposure variations:
 \begin{itemize}
     \item \textbf{Tissue Quantum Mottle ($\sigma = 0.10$):} Diagnostic accuracy remained at $90.0\%$, demonstrating that bilateral filtering successfully rejects Poisson detector noise.
@@ -355,7 +355,7 @@ M.~I.~Abid, K.~H.~Rahman, M.~A.~Kabir, and N.~Mohammed, ``FracAtlas: A dataset f
 \bibitem{fracnet2025}
 H.~Zhang, X.~Liu, W.~Chen, and J.~Wang, ``FracNet: An End-to-End Deep Learning Framework for Bone Fracture Detection,'' \textit{IEEE Transactions on Medical Imaging}, vol.~44, no.~3, pp.~712--724, 2025.
 
-\bibitem{novel_transfer2025}
+\bibitem{noveltransfer2025}
 R.~Sharma, S.~Gupta, A.~Kumar, and P.~Verma, ``Novel Transfer Learning Based Bone Fracture Detection Using Radiographic Images,'' \textit{Computerized Medical Imaging and Graphics}, vol.~118, p.~102450, 2025.
 
 \bibitem{sfnet2025}
